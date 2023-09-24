@@ -31,6 +31,7 @@ import android.os.HandlerThread
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Display.Mode
 import android.view.Surface
 import android.view.SurfaceView
 import android.view.TextureView
@@ -42,6 +43,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import com.example.testai.ml.Detect
 import com.example.testai.ml.Detect10
+import com.example.testai.ml.ModelHijaiyah
 import com.example.testai.ml.New
 import org.tensorflow.lite.support.image.TensorImage
 
@@ -65,7 +67,7 @@ import kotlin.math.log
 class MainActivity : AppCompatActivity() {
     lateinit var cameraManager: CameraManager
     lateinit var textureView: TextureView
-    lateinit var model: New
+    lateinit var model: ModelHijaiyah
     lateinit var cameraCaptureSession: CameraCaptureSession
     lateinit var cameraDevice: CameraDevice
     lateinit var captureRequest: CaptureRequest
@@ -133,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             override fun onSurfaceTextureAvailable(p0: SurfaceTexture, p1: Int, p2: Int) {
                 openCamera()
-                model = New.newInstance(applicationContext)
+                model = ModelHijaiyah.newInstance(applicationContext)
                 boundingBoxRect = RectF(100f, 100f, 300f, 300f)
 
 // Dalam onSurfaceTextureAvailable atau tempat lain yang sesuai
@@ -180,7 +182,7 @@ class MainActivity : AppCompatActivity() {
                         location.top ,
                         location.right ,
                         location.bottom,
-                        score
+                        "$score $conf"
                     )
 
                     findViewById<Button>(R.id.button2).text = score
